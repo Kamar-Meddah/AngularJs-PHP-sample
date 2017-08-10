@@ -1,4 +1,4 @@
-app.controller('postCtrl', function($scope, adminService, adminPostsService, $rootScope, postsService, $routeParams, $http, EzAlert) {
+app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPostsService, $rootScope, postsService, $routeParams, $http, EzAlert) {
     $rootScope.loading = true;
     $scope.load = true;
     $scope.lo = true;
@@ -50,16 +50,37 @@ app.controller('postCtrl', function($scope, adminService, adminPostsService, $ro
     }
 
     $scope.delete = (id) => {
-        $scope.load = true;
-        if (confirm('Voulez Vous Supprimer l\'categorie ?')) {
-            $http.post('php/index.php', { request: 'post.comment.delete', id: id, }).then((response) => {
-                postsService.comment($routeParams.postId).then((data) => {
-                    $scope.comments = data;
-                });
-                EzAlert.success('Votre commentaire a été supprimmer');
-                $scope.load = false;
-            });
-        }
+        $ngConfirm({
+            title: 'Confirm!',
+            content: 'Voulez Vous Supprimer la categorie ?',
+            scope: $scope,
+            buttons: {
+                Oui: {
+                    text: 'Oui',
+                    btnClass: 'btn-red',
+                    action: function(scope, button) {
+                        $scope.load = true;
+                        $http.post('php/index.php', { request: 'post.comment.delete', id: id, }).then((response) => {
+                            postsService.comment($routeParams.postId).then((data) => {
+                                $scope.comments = data;
+                            });
+                            EzAlert.success('Votre commentaire a été supprimmer');
+                            $scope.load = false;
+                        });
+
+                    }
+                },
+                Non: {
+                    text: 'Non',
+                    btnClass: 'btn-orange',
+                    action: function(scope, button) {}
+                }
+            }
+        });
+
+
+
+
     }
 
 
