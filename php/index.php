@@ -97,12 +97,12 @@ if(isset($data)){
             $req=$app->getTable('categories')->update($data->id,["titre"=>$data->title]);
             break;
 
+
         case 'admin.categories.delete':
             $total=$app->getTable('articles')->countByCategorie($data->id)->total;
             if($total == '0'){
                 echo json_encode($array=['num'=>$total]);
-            }else{
-             $app->getTable('categories')->delete($data->id);
+                $app->getTable('categories')->delete($data->id);
             }
             break;
 

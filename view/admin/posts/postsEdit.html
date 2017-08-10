@@ -2,8 +2,8 @@
 <div ng-show="dat">
     <navbar-admin></navbar-admin>
     <a href="#!/admin/posts/1">
-<i class="fa fa-chevron-circle-left m" aria-hidden="true"></i><br><br></a>
-    <h1><i class="fa fa-pencil-square" aria-hidden="true"></i>  <em>Editez vos posts</em></h1><br>
+        <i class="fa fa-chevron-circle-left m" aria-hidden="true"></i><br><br></a>
+    <h1><i class="fa fa-pencil-square" aria-hidden="true"></i> <em>Editez vos posts</em></h1><br>
     <div ng-show="loading" class="container admin text-center"><em><i style="font-size:15em;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br>
             <h1>Loading...</h1></em></div>
     <div ng-hide="loading">
@@ -43,7 +43,7 @@
                         <li class="list-unstyled" ng-repeat="image in images">
                             <i class="fa fa-times" aria-hidden="true" ng-click="deleteImg(image.id)"></i>
                             <br>
-                            <img src="img/articles/{{image.name}}" class="img-fluid img-thumbnail" alt="Images" width="280px">
+                            <a href="img/articles/{{image.name}}" data-lightbox="roadtrip"> <img src="img/articles/{{image.name}}" class="img-fluid img-thumbnail" alt="Images" width="280px"></a>
                             <hr>
                         </li>
                     </ul>

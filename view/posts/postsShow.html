@@ -16,9 +16,9 @@
 
             <br>
             <div ng-bind-html="post.contenu"></div> <br>
-              <div class="row">
+            <div class="row">
                 <div class="col-sm-4 col-12" ng-repeat="image in images">
-                    <a >
+                    <a href="img/articles/{{image.name}}" data-lightbox="roadtrip">
                         <p><img src="img/articles/{{image.name}}" class="img-fluid img-thumbnail" alt="Images" width="300px"></p>
                     </a>
                 </div>
@@ -33,7 +33,7 @@
     </div>
 
 
-  
+
 
     <div class="row">
         <div class="col-sm-6 col-6">
