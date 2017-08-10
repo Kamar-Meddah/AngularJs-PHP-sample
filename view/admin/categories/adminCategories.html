@@ -1,0 +1,56 @@
+<title>Categories</title>
+<div ng-show="dat">
+    <navbar-admin></navbar-admin>
+
+    <h1><i class="fa fa-folder-open-o" aria-hidden="true"></i><em> <b>Categories</b></em></h1>
+    <br>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#!/admin/home"><i class="fa fa-home" aria-hidden="true"></i> <em>Home</em></a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-folder-open-o" aria-hidden="true"></i> <em>categories</em></li>
+    </ol>
+    <br>
+    <div ng-show="loading" class="container admin text-center"><em><i style="font-size:15em;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br>
+            <h1>Loading...</h1></em></div>
+    <div ng-hide="loading">
+        <a href="#!/admin/categories/edit/add" class="btn btn-outline-success"><i class="fa fa-plus" aria-hidden="true"></i><em>Ajouter des nouveau categories</em></a><br><br>
+
+        <div class="table-responsive">
+            <table class="table  table-hover table-bordered">
+                <thead class="thead-inverse">
+                    <td class="text-center"><b><em>id</em></b></td>
+                    <td class="text-center"><b><em>titre</em></b></td>
+                    <td class="text-center"><b><em>action</em></b></td>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="categorie in categories">
+                        <td class="text-center"><b>{{categorie.id}}</b></td>
+                        <td>{{categorie.titre}}</td>
+                        <td class="text-center">
+                            <a href="#!/admin/categories/edit/{{categorie.titre}}/{{categorie.id}}" class="btn btn-outline-warning" style="margin-right:1em;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><em>Edit</em></a>
+                            <button type="button" ng-click="delete(categorie.id)" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i><em>Delete</em></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <br>
+            <ul class="pagination justify-content-center ">
+
+                <li ng-class="{disabled:d==true}" class="page-item">
+                    <a class="page-link" href="#!/admin/categories/{{(p*1)-(1*1)}}">&laquo;</a>
+                </li>
+
+                <li ng-class="{active:p==page}" ng-repeat="page in pages" class="page-item ">
+                    <a class="page-link" href="#!/admin/categories/{{page}}">{{page}}</a>
+                </li>
+
+                <li ng-class="{disabled:p==last}" class="page-item">
+                    <a class="page-link" href="#!/admin/categories/{{(p*1)+(1*1)}}">&raquo;</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>

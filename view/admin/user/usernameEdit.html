@@ -1,0 +1,21 @@
+<title>Edit username</title>
+<div ng-show="dat">
+    <navbar-admin></navbar-admin>
+
+    <form class="form-group" ng-submit="usernameChange()">
+
+        <div class="container col-sm-8">
+            <h2 class="form-signin-heading">Changer Votre Username</h2>
+            <br>
+            <label for="new_user">Nouveau Username</label><input ng-model="username" type="text" name="new_user" class="form-control control" placeholder="username" pattern="[A-Za-z0-9_ ,]{1,}" required>
+
+            <br>
+
+            <label for="ancien_pass">Mots de passe</label><input ng-model="password" type="password" name="ancien_pass" class="form-control control" placeholder="Enter old password" pattern="[A-Za-z0-9_ ,]{1,}" required>
+            <br>
+            <div class="text-right">
+                <button type="submit" class="btn btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i> <em>Change</em></button> </div>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,34 @@
+<nav class="navbar fixed-top navbar-toggleable-sm navbar-inverse" style="background-color:black">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    <div class="row">
+        <div class="col-sm-1 col-1">
+            <div class="dropdown navbar-brand text-info">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#!/users/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                </div>
+            </div>
+        </div>
+        <a class="navbar-brand" style="margin-left:1em;" href="#!/">
+            <i class="fa fa-university text-info" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarExample">
+        <ul class="navbar-nav ml-auto " role="toolbar">
+
+            <li class="nav-item">
+                <form class="form-inline" ng-submit=" rech(search)">
+                    <div class="input-group">
+                        <input ng-model="search" id="search" class="form-control re" type="text" placeholder="Search" required>
+                        <button id="button" class="btn btn-sm" type="submit " style="background-color:white;"><i class="fa fa-search s" aria-hidden="true"></i></button>
+                    </div>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+</nav>

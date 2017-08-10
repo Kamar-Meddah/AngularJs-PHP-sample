@@ -1,0 +1,45 @@
+<navbar></navbar>
+<title>Home</title>
+
+<div class="row">
+    <div class="col-sm-8 col-8">
+        <h1><i class="fa fa-home" aria-hidden="true"></i><em><b> Home</b></em></h1>
+        <br>
+        <div ng-show="loading" class="container admin text-center"><em><i style="font-size:15em;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br>
+            <h1>Loading...</h1></em>
+        </div>
+        <div ng-hide="loading">
+            <div ng-repeat="post in posts">
+                <h2><a href="#!/category={{post.categorie}}/post={{post.titre}}/{{post.id}}">{{post.titre}}</a></h2>
+                <a href="#!/category={{post.categorie}} {{post.catid}}/1"><i class="fa fa-folder-open-o" aria-hidden="true"></i><em class="shadow">{{post.categorie}}</em></a>
+                <p ng-bind-html="post|contenu"></p>
+                <b><hr></b>
+            </div>
+        </div>
+
+        <div>
+            <br>
+            <ul class="pagination justify-content-center ">
+                <li ng-class="{disabled:d==true}" class="page-item">
+                    <a class="page-link" href="#!/{{(p*1)-(1*1)}}">&laquo;</a>
+                </li>
+
+                <li ng-class="{active:p==page}" ng-repeat="page in pages" class="page-item ">
+                    <a class="page-link" href="#!/{{page}}">{{page}}</a>
+                </li>
+
+                <li ng-class="{disabled:p==last}" class="page-item">
+                    <a class="page-link" href="#!/{{(p*1)+(1*1)}}">&raquo;</a>
+                </li>
+
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="col-sm-4 col-4">
+        <br><br><br>
+        <h2><i class="fa fa-folder-open-o" aria-hidden="true"></i><em> Categories</em></h2>
+        <li class="list-unstyled" ng-repeat="categorie in categories"><a href="#!/category={{categorie.titre}} {{categorie.id}}/1">{{categorie.titre}}</a></li>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<navbar></navbar>
+<title>{{categorie.title}}</title>
+
+<div class="row">
+    <div class="col-sm-8 col-8">
+        <h1><i class="fa fa-folder-open-o" aria-hidden="true"></i> <em> <b>{{categorie.title}}</b></em></h1>
+        <br>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#!"><i class="fa fa-home" aria-hidden="true"></i><em> Home</em></a></li>
+            <li class="breadcrumb-item active"><i class="fa fa-folder-open-o" aria-hidden="true"></i> <em>{{categorie.title}}</em></li>
+        </ol>
+        <div ng-show="loading" class="container admin text-center"><em><i style="font-size:15em;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br>
+            <h1>Loading...</h1></em></div>
+        <div ng-hide="loading">
+            <div ng-repeat="post in posts">
+                <h2><a href="#!/category={{post.categorie}}/post={{post.titre}}/{{post.id}}">{{post.titre}}</a></h2>
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i><em>{{post.categorie}}</em>
+                <p ng-bind-html="post|contenu"></p>
+                <hr>
+            </div>
+        </div>
+
+
+        <div>
+            <br>
+            <ul class="pagination justify-content-center">
+                <li ng-class="{disabled:d==true}" class="page-item">
+                    <a class="page-link" href="#!/category={{categorie.title}} {{categorie.id}}/{{(p*1)-(1*1)}}">&laquo;</a>
+                </li>
+
+                <li ng-class="{active:p==page}" ng-repeat="page in pages" class="page-item ">
+                    <a class="page-link" href="#!/category={{categorie.title}} {{categorie.id}}/{{page}}">{{page}}</a>
+                </li>
+
+                <li ng-class="{disabled:p==last}" class="page-item">
+                    <a class="page-link" href="#!/category={{categorie.title}} {{categorie.id}}/{{(p*1)+(1*1)}}">&raquo;</a>
+                </li>
+
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="col-sm-4 col-4">
+        <br><br><br>
+        <h2><i class="fa fa-folder-open-o" aria-hidden="true"></i><em> Categories</em></h2>
+        <li class="list-unstyled" ng-repeat="categorie in categories"><a href="#!/category={{categorie.titre}} {{categorie.id}}/1">{{categorie.titre}}</a></li>
+    </div>
+</div>

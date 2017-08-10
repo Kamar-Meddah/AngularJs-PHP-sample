@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrapfix.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/ez-alert.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/angular-confirm.min.css" rel="stylesheet">
+    <link href="css/angular-csp.css" rel="stylesheet">
+</head>
+
+<body ng-app="blog-v3">
+
+    <nav class="navbar navbar-toggleable-sm navbar-inverse  fixed-top" style="background-color:black">
+        <a class="navbar-brand" style="color:black">Bj</a>
+    </nav>
+
+    <ez-alert></ez-alert>
+
+    <div ng-view class="container "></div>
+
+    <br><br>
+    <!--                  Libs                   -->
+    <script src="js/libs/jquery-3.2.1.min.js "></script>
+    <script src="js/libs/angular.min.js "></script>
+    <script src="js/libs/angular-route.min.js "></script>
+    <script src="js/libs/angular-sanitize.min.js "></script>
+    <script src="js/libs/ez-alert.min.js"></script>
+    <script src="js/libs/ez-alert-tpl.js"></script>
+    <script src="js/libs/tether.min.js "></script>
+    <script src="js/libs/bootstrap.min.js "></script>
+    <script src="js/libs/angular-confirm.min.js "></script>
+    <script src="js/libs/tinymce/tinymce.min.js"></script>
+    <script src="js/libs/tinymce.min.js"></script>
+
+    <!--                  main                   -->
+    <script src="js/main/main.js "></script>
+    <script src="js/main/app.js "></script>
+    <script src="js/filtre/filtre.js"></script>
+    <!--                 directives                  -->
+    <script src="js/directive/navbarDirective.js"></script>
+    <script src="js/directive/adminNavbarDirective.js"></script>
+    <!--                  Ctrls                   -->
+    <script src="js/controller/postsCtrl.js "></script>
+    <script src="js/controller/postCtrl.js "></script>
+    <script src="js/controller/bycategorieCtrl.js "></script>
+    <script src="js/controller/postsSearchCtrl.js "></script>
+    <script src="js/controller/usersCtrl.js "></script>
+    <script src="js/controller/navbarCtrl.js "></script>
+
+    <script src="js/controller/admin/userCtrl.js"></script>
+    <script src="js/controller/admin/categories/categoriesCtrl.js"></script>
+    <script src="js/controller/admin/categories/categoriesEditCtrl.js"></script>
+    <script src="js/controller/admin/posts/adminPostsCtrl.js"></script>
+    <script src="js/controller/admin/posts/adminPostsEditCtrl.js"></script>
+    <!--                  Services                  -->
+    <script src="js/service/postsService.js "></script>
+    <script src="js/service/usersService.js "></script>
+    <script src="js/service/admin/userService.js "></script>
+    <script src="js/service/admin/categoriesService.js"></script>
+    <script src="js/service/admin/adminService.js"></script>
+    <script src="js/service/admin/adminPostsService.js"></script>
+
+</body>
+
+</html>
