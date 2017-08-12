@@ -27,7 +27,7 @@
                         <td>{{categorie.titre}}</td>
                         <td class="text-center">
                             <a href="#!/admin/categories/edit/{{categorie.titre}}/{{categorie.id}}" class="btn btn-outline-warning" style="margin-right:1em;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><em>Edit</em></a>
-                            <button type="button" ng-click="delete(categorie.id)" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i><em>Delete</em></button>
+                            <button type="button" ng-click="delete(categorie.id,$index)" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i><em>Delete</em></button>
                         </td>
                     </tr>
                 </tbody>

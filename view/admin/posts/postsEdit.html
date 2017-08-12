@@ -41,7 +41,7 @@
                     <br><br>
                     <ul>
                         <li class="list-unstyled" ng-repeat="image in images">
-                            <i class="fa fa-times" aria-hidden="true" ng-click="deleteImg(image.id)"></i>
+                           <a href=""> <i class="fa fa-times t" aria-hidden="true" ng-click="deleteImg(image.id,$index)"></i></a>
                             <br>
                             <a href="img/articles/{{image.name}}" data-lightbox="roadtrip"> <img src="img/articles/{{image.name}}" class="img-fluid img-thumbnail" alt="Images" width="280px"></a>
                             <hr>
