@@ -1,4 +1,4 @@
-app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPostsService, $rootScope, postsService, $routeParams, $http, EzAlert) {
+app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPostsService, $rootScope, postsService, $routeParams, $http, EzAlert,$filter) {
     $rootScope.loading = true;
     $scope.load = true;
     $scope.lo = true;
@@ -33,41 +33,32 @@ app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPosts
     });
 
     $scope.commenter = () => {
-        $scope.load = true;
+
         $http.post('php/index.php', { request: 'post.commenter', postId: $routeParams.postId, name: $scope.name, comment: $scope.comment }).then(() => {
-            postsService.comment($routeParams.postId).then((data) => {
-                EzAlert.success('Votre commentaire a été poster');
-                $scope.comments = data;
-
-            });
-            $scope.name = '';
-            $scope.comment = '';
-            $scope.load = false;
-
+             
+            EzAlert.success('Votre commentaire a été poster');
+                $scope.comments.push({'name':$scope.name,'content':$scope.comment,'date':$filter('date')(Date.now(), 'yyyy-MM-d H:mm:ss')  });
+                $scope.name = '';
+                $scope.comment = '';
         }, () => {
             EzAlert.error('Votre commentaire n\'a pas été poster');
         })
     }
 
-    $scope.delete = (id) => {
+    $scope.delete = (id,index) => {
         $ngConfirm({
             title: 'Confirm!',
-            content: 'Voulez Vous Supprimer la categorie ?',
+            content: 'Voulez Vous Supprimer ce commentaire ?',
             scope: $scope,
             buttons: {
                 Oui: {
                     text: 'Oui',
                     btnClass: 'btn-red',
-                    action: function(scope, button) {
-                        $scope.load = true;
+                    action: function(scope, button, element) {
                         $http.post('php/index.php', { request: 'post.comment.delete', id: id, }).then((response) => {
-                            postsService.comment($routeParams.postId).then((data) => {
-                                $scope.comments = data;
-                            });
+                             $scope.comments.splice(index,1);   
                             EzAlert.success('Votre commentaire a été supprimmer');
-                            $scope.load = false;
                         });
-
                     }
                 },
                 Non: {

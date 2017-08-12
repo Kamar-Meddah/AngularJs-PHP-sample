@@ -30,7 +30,7 @@ app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categor
 
     })
 
-    $scope.delete = (id) => {
+    $scope.delete = (id,index) => {
  
         $ngConfirm({
             title: 'Confirm!',
@@ -41,18 +41,14 @@ app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categor
                     text: 'Oui',
                     btnClass: 'btn-red',
                     action: function(scope, button){  
-                        $rootScope.loading = true; 
                     $http.post('php/index.php', { request: 'admin.categories.delete', id: id }).then((response) => {
                         if (response.data.num !=='0'){
                             $rootScope.loading = false;
                            EzAlert.error('Impossible d\'effectué la suppression ! La categorie n\'est pas vide');
                         }else{
-
                     EzAlert.success('Votre categorie a été bien supprimer');
-                    categoriesService.allCat($routeParams.page).then((data) => {
-                    $scope.categories = data.art;
-                    $rootScope.loading = false;
-                 })}
+                    $scope.categories.splice(index,1);
+                          }
             });
                     }
                 },

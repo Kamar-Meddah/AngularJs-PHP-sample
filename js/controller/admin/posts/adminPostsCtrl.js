@@ -30,7 +30,7 @@ app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, adminPo
 
     })
 
-    $scope.delete = (id) => {
+    $scope.delete = (id,index) => {
         
 
       $ngConfirm({
@@ -42,14 +42,10 @@ app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, adminPo
                     text: 'Oui',
                     btnClass: 'btn-red',
                     action: function(scope, button){  
-                        $rootScope.loading = true;
-                                    $http.post('php/index.php', { request: 'admin.posts.delete', id: id }).then((response) => {
-                EzAlert.success('Votre post a été bien supprimer');
-                adminPostsService.all($routeParams.page).then((data) => {
-                   $scope.posts = data.art;
-                   $rootScope.loading = false;
-                })
-            }); 
+                     $http.post('php/index.php', { request: 'admin.posts.delete', id: id }).then((response) => {
+                          EzAlert.success('Votre post a été bien supprimer');
+                         $scope.posts.splice(index,1);            
+                      }); 
                     }
                 },
                  Non: {

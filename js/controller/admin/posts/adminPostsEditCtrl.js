@@ -1,6 +1,7 @@
-app.controller('adminPostsEditCtrl', function($scope, $rootScope, $routeParams, $http, adminPostsService, adminService, EzAlert, $location, $http) {
+app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $routeParams, $http, adminPostsService, adminService, EzAlert, $location, $http) {
     $rootScope.loading = true;
     $rootScope.lo = true;
+    $scope.images=[];
     adminService.logged().then((data) => {
         if (data === 'false') {
             document.write('<h1 align="center">Error 403 accés interdit</h1>');
@@ -44,22 +45,34 @@ app.controller('adminPostsEditCtrl', function($scope, $rootScope, $routeParams, 
         $rootScope.loading = false;
     }
 
-    $scope.deleteImg = (id) => {
-                if (confirm('Voulez Vous Supprimer l\'categorie ?')) {
-        $http.post('php/index.php', { request: 'admin.post.imagesDel', id: id }).then((response) => {
-            adminPostsService.Images($routeParams.posid).then((data) => {
-            $scope.images = data;
-            $rootScope.lo = false;
-        });
-        
-            EzAlert.success('L`\image a été bien supprimer');
-        });
-                }
+    $scope.deleteImg = (id,index) => {
 
+        $ngConfirm({
+            title: 'Confirm!',
+            content: 'Voulez Vous Supprimer cette image ?',
+            scope: $scope,
+            buttons: {
+                Oui: {
+                    text: 'Oui',
+                    btnClass: 'btn-red',
+                    action: function(scope, button) {
+                          $http.post('php/index.php', { request: 'admin.post.imagesDel', id: id }).then((response) => {
+                          $scope.images.splice(index,1);
+                          EzAlert.success('L`\image a été bien supprimer');
+                        });
+                       }
+                    },
+                Non: {
+                    text: 'Non',
+                    btnClass: 'btn-orange',
+                    action: function(scope, button) {}
+                }
+            }
+        });
     }
 
     $scope.add = () => {
-if($scope.category !== undefined){
+      if($scope.category !== undefined){
         let formElement = document.querySelector("form");
         $http.post('php/index.php', new FormData(formElement), {
             transformRequest: angular.identity,
@@ -69,27 +82,19 @@ if($scope.category !== undefined){
             $location.path('/admin/posts/edit/' + $scope.titre + '/' + response.data.id);
         })
         }else{EzAlert.error('le champs categorie est tjr vide !!');}
-    }
+     }
 
     $scope.edit = () => {
-        $rootScope.loading=true;
         let formElement = document.querySelector("form");
         $http.post('php/index.php', new FormData(formElement), {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined, 'Process-Data': false }
         }).then(response => {
-                    adminPostsService.find($routeParams.posid).then((data) => {
-            $scope.oop = data.id;
-            $rootScope.loading = false;
-
-        })
-
-        adminPostsService.Images($routeParams.posid).then((data) => {
-            $scope.images = data;
-            $rootScope.lo = false;
-        });
+            angular.forEach(response.data,(value)=>{
+              $scope.images.push(value);
+            })
+            
         $('#file').val(null);
-
             EzAlert.success('Votre post a été modifié');
         })
     }
