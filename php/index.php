@@ -15,7 +15,7 @@ if(isset($data)){
             $page=$data->page;
             $total=$app->getTable('articles')->count()->total;
             $nbpage=ceil($total/$parpage);
-            $article=$app->getTable('articles')->last(["arg1"=>$page*$parpage-$parpage,"arg2" =>$parpage]);
+            $article=$app->getTable('articles')->all(["arg1"=>$page*$parpage-$parpage,"arg2" =>$parpage]);
             $array=['art'=>$article,'nbpage'=>$nbpage];
             echo(json_encode($array));
             break;
@@ -106,16 +106,6 @@ if(isset($data)){
             }
             break;
 
-        case 'admin.posts':
-            $parpage=6;
-            $page=$data->page;
-            $total=$app->getTable('articles')->count()->total;
-            $nbpage=ceil($total/$parpage);
-            $article=$app->getTable('articles')->all(["arg1"=>$page*$parpage-$parpage,"arg2" =>$parpage]);
-            $array=['art'=>$article,'nbpage'=>$nbpage];
-            echo json_encode($array);
-            break;
-
         case 'admin.posts.delete':
            $images=$app->getTable('images')->find($data->id);
            foreach ($images as $image)
@@ -136,11 +126,6 @@ if(isset($data)){
             $image=$app->getTable('images')->findid($data->id);
             unlink(ROOT.'../img/articles/'.$image->name);
             $req=$app->getTable('images')->delete($data->id);
-            break;
-
-        case 'admin.post':
-            $req=$app->getTable('articles')->find($data->id);
-            echo json_encode($req);
             break;
 
         case 'users.getId':
@@ -204,6 +189,7 @@ if (isset($_POST)){
           //Ajout des Images
         if(!empty($_FILES))
           {
+              $r=[];
            $files=$_FILES['images'];
            $images=array();
            foreach($files['tmp_name'] as $k=>$v)
@@ -220,8 +206,10 @@ if (isset($_POST)){
                  $image_name=$image_id.'.'.$extension;
                  move_uploaded_file($image['tmp_name'],ROOT.'../img/articles/'.$image_name);
                  $app->getTable('images')->update($image_id,["name" => $image_name]);
+                 array_push($r,['id'=>$image_id,'name'=>$image_name]);
               }
            }
+            echo json_encode($r);
           }
             break;
 

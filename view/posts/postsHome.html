@@ -12,7 +12,9 @@
             <div ng-repeat="post in posts">
                 <h2><a href="#!/category={{post.categorie}}/post={{post.titre}}/{{post.id}}">{{post.titre}}</a></h2>
                 <a href="#!/category={{post.categorie}} {{post.catid}}/1"><i class="fa fa-folder-open-o" aria-hidden="true"></i><em class="shadow">{{post.categorie}}</em></a>
+               <p>
                 <p ng-bind-html="post|contenu"></p>
+                </p>
                 <b><hr></b>
             </div>
         </div>

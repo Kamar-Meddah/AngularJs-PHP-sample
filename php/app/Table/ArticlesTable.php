@@ -3,30 +3,17 @@ namespace med\app\Table;
 use med\core\table\Table;
 
 class ArticlesTable extends Table
-{
-       public function last($arg=[])
-    {
-        extract($arg);
-        return $this->query("
-        SELECT
-        articles.id,articles.titre,SUBSTRING(articles.contenu,1,200)as contenu,categories.titre as categorie,articles.category_id as catid
-        FROM
-        articles LEFT JOIN categories
-        ON articles.category_id=categories.id
-        ORDER BY articles.date DESC
-        LIMIT $arg1,$arg2");
-    }
-    
+{   
     public function all($arg=[])
     {
         extract($arg);
         return $this->query("
         SELECT
-        articles.id,articles.titre,categories.titre as categorie
+        articles.id,articles.titre,articles.contenu,categories.titre as categorie,articles.category_id as catid,articles.date
         FROM
         articles LEFT JOIN categories
         ON articles.category_id=categories.id
-        ORDER BY articles.titre ASC
+        ORDER BY articles.date desc
         LIMIT $arg1,$arg2
         ");
     }
