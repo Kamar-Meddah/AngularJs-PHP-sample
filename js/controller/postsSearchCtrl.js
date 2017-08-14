@@ -1,4 +1,4 @@
-app.controller('postsSearchCtrl', function($scope, $rootScope, $routeParams, postsService, $rootScope, $location) {
+app.controller('postsSearchCtrl', function($scope, $rootScope, $routeParams, categoriesFactory, postsFactory, $rootScope, $location) {
     $rootScope.loading = true;
 
     $scope.pages = [];
@@ -9,7 +9,7 @@ app.controller('postsSearchCtrl', function($scope, $rootScope, $routeParams, pos
     }
     $scope.p = $routeParams.page;
 
-    postsService.searc($routeParams.post, $scope.p).then((data) => {
+    postsFactory.searc($routeParams.post, $scope.p).then((data) => {
         $scope.posts = data.art;
         $scope.last = data.nbpage;
         for (let i = 1; i <= data.nbpage; i++) {
@@ -20,7 +20,7 @@ app.controller('postsSearchCtrl', function($scope, $rootScope, $routeParams, pos
         $scope.search = $routeParams.post;
     }, () => {});
 
-    postsService.allCat().then((data) => {
+    categoriesFactory.allCat().then((data) => {
         $scope.categories = data;
     }, (data) => {});
 });

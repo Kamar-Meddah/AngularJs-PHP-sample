@@ -1,16 +1,7 @@
-app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $routeParams, $http, adminPostsService, adminService, EzAlert, $location, $http) {
+app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $routeParams,imagesFactory,categoriesFactory, postsFactory, EzAlert, $location, $http) {
     $rootScope.loading = true;
     $rootScope.lo = true;
     $scope.images=[];
-    adminService.logged().then((data) => {
-        if (data === 'false') {
-            document.write('<h1 align="center">Error 403 accés interdit</h1>');
-            $rootScope.dat = false;
-            throw ('acces interdit');
-        } else {
-            $rootScope.dat = true;
-        }
-    });
 
     $scope.tinymceOptions = {
         onChange: function(e) {
@@ -23,12 +14,12 @@ app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $ro
         theme: 'modern'
     };
 
-    adminPostsService.allCat().then((data) => {
+    categoriesFactory.allCat().then((data) => {
         $scope.categories = data;
     });
 
     if ($routeParams.posid != undefined) {
-        adminPostsService.find($routeParams.posid).then((data) => {
+        postsFactory.find($routeParams.posid).then((data) => {
             $scope.titre = data.titre;
             $scope.content = data.contenu;
             $scope.category = data.category_id;
@@ -37,7 +28,7 @@ app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $ro
 
         })
 
-        adminPostsService.Images($routeParams.posid).then((data) => {
+        imagesFactory.find($routeParams.posid).then((data) => {
             $scope.images = data;
             $rootScope.lo = false;
         });
@@ -56,9 +47,11 @@ app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $ro
                     text: 'Oui',
                     btnClass: 'btn-red',
                     action: function(scope, button) {
-                          $http.post('php/index.php', { request: 'admin.post.imagesDel', id: id }).then((response) => {
+                        imagesFactory.delete(id).then((data) => {
                           $scope.images.splice(index,1);
-                          EzAlert.success('L`\image a été bien supprimer');
+                          EzAlert.success(data);
+                        },(data)=>{
+                            EzAlert.error(data);
                         });
                        }
                     },
@@ -73,29 +66,24 @@ app.controller('adminPostsEditCtrl', function($scope, $ngConfirm,$rootScope, $ro
 
     $scope.add = () => {
       if($scope.category !== undefined){
-        let formElement = document.querySelector("form");
-        $http.post('php/index.php', new FormData(formElement), {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined, 'Process-Data': false }
-        }).then(response => {
+        let formElement = new FormData(document.querySelector("form"));
+        postsFactory.add(formElement).then((data) => {
             EzAlert.success('Votre post a été ajouté');
-            $location.path('/admin/posts/edit/' + $scope.titre + '/' + response.data.id);
+            $location.path('/admin/posts/edit/' + $scope.titre + '/' + data);
         })
         }else{EzAlert.error('le champs categorie est tjr vide !!');}
      }
 
     $scope.edit = () => {
-        let formElement = document.querySelector("form");
-        $http.post('php/index.php', new FormData(formElement), {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined, 'Process-Data': false }
-        }).then(response => {
-            angular.forEach(response.data,(value)=>{
+        let formElement = new FormData(document.querySelector("form"));
+        postsFactory.edit(formElement).then((data) => {
+            angular.forEach(data,(value)=>{
               $scope.images.push(value);
-            })
-            
-        $('#file').val(null);
+            });
+            $('#file').val(null);
             EzAlert.success('Votre post a été modifié');
-        })
+        },(data)=>{
+            EzAlert.error(data);
+        });
     }
 });

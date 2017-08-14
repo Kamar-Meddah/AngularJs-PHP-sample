@@ -1,9 +1,8 @@
-app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPostsService, $rootScope, postsService, $routeParams, $http, EzAlert,$filter) {
+app.controller('postCtrl', function($scope, $ngConfirm, commentsFactory, categoriesFactory, userService, imagesFactory, $rootScope, postsFactory, $routeParams, EzAlert, $filter) {
     $rootScope.loading = true;
     $scope.load = true;
-    $scope.lo = true;
 
-    adminService.logged().then((data) => {
+    userService.logged().then((data) => {
         if (data === 'false') {
             $rootScope.dat = false;
         } else {
@@ -11,41 +10,37 @@ app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPosts
         }
     });
 
-    postsService.getpost($routeParams.postId, $routeParams.post).then((data) => {
+    postsFactory.find($routeParams.postId, $routeParams.post).then((data) => {
         $rootScope.loading = false;
         $scope.post = data;
-
     });
 
-    adminPostsService.Images($routeParams.postId).then((data) => {
+    imagesFactory.find($routeParams.postId).then((data) => {
         $scope.images = data;
-        $rootScope.lo = false;
     })
 
-    postsService.allCat().then((data) => {
+    categoriesFactory.allCat().then((data) => {
         $scope.categories = data;
     }, (data) => {});
 
-    postsService.comment($routeParams.postId).then((data) => {
+    commentsFactory.find($routeParams.postId).then((data) => {
         $scope.comments = data;
         $scope.select = "-date";
         $scope.load = false;
     });
 
     $scope.commenter = () => {
-
-        $http.post('php/index.php', { request: 'post.commenter', postId: $routeParams.postId, name: $scope.name, comment: $scope.comment }).then(() => {
-             
-            EzAlert.success('Votre commentaire a été poster');
-                $scope.comments.push({'name':$scope.name,'content':$scope.comment,'date':$filter('date')(Date.now(), 'yyyy-MM-d H:mm:ss')  });
-                $scope.name = '';
-                $scope.comment = '';
-        }, () => {
-            EzAlert.error('Votre commentaire n\'a pas été poster');
-        })
+        commentsFactory.commenter($routeParams.postId, $scope.name, $scope.comment).then((data) => {
+            EzAlert.success(data);
+            $scope.comments.push({ 'name': $scope.name, 'content': $scope.comment, 'date': $filter('date')(Date.now(), 'yyyy-MM-d H:mm:ss') });
+            $scope.name = '';
+            $scope.comment = '';
+        }, (data) => {
+            EzAlert.error(data);
+        });
     }
 
-    $scope.delete = (id,index) => {
+    $scope.delete = (id, index) => {
         $ngConfirm({
             title: 'Confirm!',
             content: 'Voulez Vous Supprimer ce commentaire ?',
@@ -54,25 +49,21 @@ app.controller('postCtrl', function($scope, $ngConfirm, adminService, adminPosts
                 Oui: {
                     text: 'Oui',
                     btnClass: 'btn-red',
-                    action: function(scope, button, element) {
-                        $http.post('php/index.php', { request: 'post.comment.delete', id: id, }).then((response) => {
-                             $scope.comments.splice(index,1);   
-                            EzAlert.success('Votre commentaire a été supprimmer');
+                    action: function(scope, button) {
+                        commentsFactory.delete(id).then((data) => {
+                            $scope.comments.splice(index, 1);
+                            EzAlert.success(data);
+                        }, (data) => {
+                            EzAlert.error(data);
                         });
                     }
                 },
                 Non: {
                     text: 'Non',
                     btnClass: 'btn-orange',
-                    action: function(scope, button) {}
+                    action: function() {}
                 }
             }
         });
-
-
-
-
     }
-
-
 });

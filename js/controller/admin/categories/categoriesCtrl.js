@@ -1,15 +1,5 @@
-app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categoriesService, EzAlert, $http, adminService, $routeParams) {
+app.controller('categoriesCtrl', function($ngConfirm, $scope, $rootScope, categoriesFactory, EzAlert,$routeParams) {
     $rootScope.loading = true;
-    adminService.logged().then((data) => {
-        if (data === 'false') {
-            document.write('<h1 align="center">Error 403 accés interdit</h1>');
-            $rootScope.dat = false;
-            throw ('acces interdit');
-        } else {
-            $rootScope.dat = true;
-        }
-    });
-
 
     $scope.pages = [];
     if ($routeParams.page == 1) {
@@ -20,7 +10,7 @@ app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categor
     $scope.p = $routeParams.page;
 
 
-    categoriesService.allCat($scope.p).then((data) => {
+    categoriesFactory.allCatP($scope.p).then((data) => {
         $scope.categories = data.art;
         $scope.last = data.nbpage;
         for (let i = 1; i <= data.nbpage; i++) {
@@ -30,8 +20,8 @@ app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categor
 
     })
 
-    $scope.delete = (id,index) => {
- 
+    $scope.delete = (id, index) => {
+
         $ngConfirm({
             title: 'Confirm!',
             content: 'Voulez Vous Supprimer la categorie ?',
@@ -40,23 +30,21 @@ app.controller('categoriesCtrl', function($ngConfirm,$scope, $rootScope, categor
                 Oui: {
                     text: 'Oui',
                     btnClass: 'btn-red',
-                    action: function(scope, button){  
-                    $http.post('php/index.php', { request: 'admin.categories.delete', id: id }).then((response) => {
-                        if (response.data.num !=='0'){
-                            $rootScope.loading = false;
-                           EzAlert.error('Impossible d\'effectué la suppression ! La categorie n\'est pas vide');
-                        }else{
-                    EzAlert.success('Votre categorie a été bien supprimer');
-                    $scope.categories.splice(index,1);
-                          }
-            });
+                    action: function(scope, button) {
+                        categoriesFactory.delete(id).then((data) => {
+                            if (data!== '0') {
+                                EzAlert.error('Impossible d\'effectué la suppression ! La categorie n\'est pas vide');
+                            } else {
+                                EzAlert.success('Votre categorie a été bien supprimer');
+                                $scope.categories.splice(index, 1);
+                            }
+                        });
                     }
                 },
-                 Non: {
+                Non: {
                     text: 'Non',
                     btnClass: 'btn-orange',
-                    action: function(scope, button){       
-                    }
+                    action: function(scope, button) {}
                 }
             }
         });

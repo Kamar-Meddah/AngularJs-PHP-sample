@@ -1,15 +1,5 @@
-app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, adminPostsService, EzAlert, $http, adminService, $routeParams) {
+app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, postsFactory, EzAlert, $routeParams) {
     $rootScope.loading = true;
-    adminService.logged().then((data) => {
-        if (data === 'false') {
-            document.write('<h1 align="center">Error 403 accés interdit</h1>');
-            $rootScope.dat = false;
-            throw ('acces interdit');
-        } else {
-            $rootScope.dat = true;
-        }
-    });
-
 
     $scope.pages = [];
     if ($routeParams.page == 1) {
@@ -19,19 +9,16 @@ app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, adminPo
     }
     $scope.p = $routeParams.page;
 
-
-    adminPostsService.all($scope.p).then((data) => {
+    postsFactory.all($scope.p).then((data) => {
         $scope.posts = data.art;
         $scope.last = data.nbpage;
         for (let i = 1; i <= data.nbpage; i++) {
             $scope.pages[i - 1] = i;
         }
         $rootScope.loading = false;
-
     })
 
     $scope.delete = (id,index) => {
-        
 
       $ngConfirm({
             title: 'Confirm!',
@@ -42,9 +29,11 @@ app.controller('adminPostsCtrl', function($scope, $rootScope,$ngConfirm, adminPo
                     text: 'Oui',
                     btnClass: 'btn-red',
                     action: function(scope, button){  
-                     $http.post('php/index.php', { request: 'admin.posts.delete', id: id }).then((response) => {
-                          EzAlert.success('Votre post a été bien supprimer');
+                        postsFactory.delete(id).then((data) => {
+                          EzAlert.success(data);
                          $scope.posts.splice(index,1);            
+                      },(data)=>{
+                          EzAlert.error(data);
                       }); 
                     }
                 },
