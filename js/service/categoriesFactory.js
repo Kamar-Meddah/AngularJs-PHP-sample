@@ -9,7 +9,7 @@ app.factory('categoriesFactory', function($http, $q, $routeParams) {
             if (categorie.categories != undefined) {
                 deferred.resolve(categorie.categories);
             } else {
-                $http.post('php/index.php', { request: 'categories' }).then((response) => {
+                $http.post('php/index.php', { request: 'Categories.all' }).then((response) => {
                     categorie.categories = response.data;
                     deferred.resolve(categorie.categories);
                 }, () => {
@@ -22,7 +22,7 @@ app.factory('categoriesFactory', function($http, $q, $routeParams) {
         allCatP: (page) => {
             let deferred = $q.defer();
 
-            $http.post('php/index.php', { request: 'admin.categories', page: page }).then((response) => {
+            $http.post('php/index.php', { request: 'Categories.index', page: page }).then((response) => {
                 categorie.categories = response.data;
                 deferred.resolve(categorie.categories);
             }, () => {
@@ -35,7 +35,7 @@ app.factory('categoriesFactory', function($http, $q, $routeParams) {
 
         delete: (id) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'admin.categories.delete', id: id }).then((response) => {
+            $http.post('php/index.php', { request: 'Categories.delete', id: id }).then((response) => {
                 deferred.resolve(response.data.num );
             },()=>{
                 deferred.reject('recharger la page');
@@ -45,7 +45,7 @@ app.factory('categoriesFactory', function($http, $q, $routeParams) {
 
         insert: (titre) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'admin.categories.insert', title: titre }).then(() => {
+            $http.post('php/index.php', { request: 'Categories.add', title: titre }).then(() => {
                 deferred.resolve('Votre categorie a été ajouter');
             },()=>{
                 deferred.reject('recharger la page pas de cnx')
@@ -55,7 +55,7 @@ app.factory('categoriesFactory', function($http, $q, $routeParams) {
 
         edit: (titre,id) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'admin.categories.edit', title: titre, id:id}).then(() => {
+            $http.post('php/index.php', { request: 'Categories.edit', title: titre, id:id}).then(() => {
                 deferred.resolve('Votre categorie a été modifié');
             },()=>{
                 deferred.reject('recharger la page pas de cnx')

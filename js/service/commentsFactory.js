@@ -3,7 +3,7 @@ app.factory('commentsFactory', function($http, $q, $routeParams) {
 
         find: (id) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'posts.comments', id: id }).then((response) => {
+            $http.post('php/index.php', { request: 'Comments.find', id: id }).then((response) => {
                 PostsFactory.comments = response.data;
                 deferred.resolve(PostsFactory.comments);
             }, () => {
@@ -14,7 +14,7 @@ app.factory('commentsFactory', function($http, $q, $routeParams) {
 
         commenter: (id, name, comment) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'post.commenter', postId: id, name: name, comment: comment }).then(() => {
+            $http.post('php/index.php', { request: 'Comments.add', postId: id, name: name, comment: comment }).then(() => {
                 deferred.resolve('Votre commentaire a été poster');
             }, () => {
                 deferred.reject('Votre commentaire n\'a pas été poster pas de cnx internet');
@@ -24,7 +24,7 @@ app.factory('commentsFactory', function($http, $q, $routeParams) {
 
         delete: (id) => {
             let deferred = $q.defer();
-            $http.post('php/index.php', { request: 'post.comment.delete', id: id, }).then(() => {
+            $http.post('php/index.php', { request: 'Comments.delete', id: id, }).then(() => {
                 deferred.resolve('Votre commentaire a été supprimmer');
             }, () => {
                 deferred.reject('can not contact the server refresh the page');

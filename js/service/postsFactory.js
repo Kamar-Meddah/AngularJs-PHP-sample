@@ -6,7 +6,7 @@ app.factory('postsFactory', function($http, $q) {
 
     all : (page) => {
         let deferred = $q.defer();
-        $http.post('php/index.php', { request: 'posts.home', page: page }).then((response) => {
+        $http.post('php/index.php', { request: 'Articles.index', page: page }).then((response) => {
             PostsFactory.posts = response.data;
             deferred.resolve(PostsFactory.posts);
         }, () => {
@@ -17,7 +17,7 @@ app.factory('postsFactory', function($http, $q) {
 
     find : (id) => {
         let deferred = $q.defer();
-        $http.post('php/index.php', { request: 'posts.show', id: id }).then((response) => {
+        $http.post('php/index.php', { request: 'Articles.show', id: id }).then((response) => {
             PostsFactory.post = response.data;
             deferred.resolve(PostsFactory.post);
         }, () => {
@@ -29,7 +29,7 @@ app.factory('postsFactory', function($http, $q) {
     bycategorie : (id, page) => {
         let deferred = $q.defer();
 
-        $http.post('php/index.php', { request: 'posts.categories', category_id: id, page: page }).then((response) => {
+        $http.post('php/index.php', { request: 'Articles.byCategorie', category_id: id, page: page }).then((response) => {
 
             PostsFactory.Cposts = response.data;
             deferred.resolve(PostsFactory.Cposts);
@@ -41,7 +41,7 @@ app.factory('postsFactory', function($http, $q) {
 
     searc : (req, page) => {
         let deferred = $q.defer();
-        $http.post('php/index.php', { request: 'posts.search', search: req, page: page }).then((response) => {
+        $http.post('php/index.php', { request: 'Articles.search', search: req, page: page }).then((response) => {
             PostsFactory.S = response.data;
             deferred.resolve(PostsFactory.S);
         }, () => {
@@ -52,7 +52,7 @@ app.factory('postsFactory', function($http, $q) {
 
     delete :(id)=>{
         let deferred = $q.defer();
-             $http.post('php/index.php', { request: 'admin.posts.delete', id: id }).then(() => {
+             $http.post('php/index.php', { request: 'Articles.delete', id: id }).then(() => {
              deferred.resolve('Votre post a été bien supprimer');       
             },()=>{
                 deferred.reject('Impossible de suppr l\'articles , recharger la page');
@@ -67,7 +67,7 @@ app.factory('postsFactory', function($http, $q) {
             headers: { 'Content-Type': undefined, 'Process-Data': false }}).then((response) => {
             deferred.resolve(response.data.id);
         },()=>{
-            deferred.reject('Impossible de d`\'ajouter l\'articles , recharger la page');
+            deferred.reject('Impossible de d\'ajouter l\'articles , recharger la page');
         });
         return deferred.promise;
     },
